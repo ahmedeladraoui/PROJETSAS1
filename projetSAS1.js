@@ -187,37 +187,12 @@ const trips = [
 ];
 let choix = null
 
-console.log(`
-================================
-        AILWAY MANAGER
-================================
 
-1. Afficher les trajets
-2. Acheter un ticket
-3. Afficher les tickets
-4. Annuler un ticket
-5. Rechercher un ticket
-6. Filtrer les trajets
-7. Trier les trajets
-0. Quitter
-`)
 
 const config = {
     idTicket:1
 }
-function menu(choix){
-    
 
-switch(choix){
-    case 1: afficherTrajets();break;
-    case 2: acheterUnTicket();break;
-    case 3: afficherTickets();break;
-    case 0: console.log("Quiter...");break;
-    default:{
-        console.log("choix pas existe!")
-    }
-}
-}
 
 
 function afficherTrajets(){
@@ -241,7 +216,7 @@ function acheterUnTicket(){
     let trj = trips.find((e)=> e.id == idTrajet ? e : false)
     let seateNbr = null
     
-        if(!(trj)){
+        if(trj == undefined){
             console.log("Trajet introuvable")
         }else{
             if(trj.availableSeats >= 1){
@@ -295,10 +270,107 @@ function afficherTickets(){
 function annulerTicket(){
     let idTck = Number(prompt("Taper l'identifiant du ticket: "))
 
-    let Tck = tickets.find((t)=> t.id ==)
+    let Tck = tickets.find((t)=> t.id == idTck)
+    if(idTck == undefined){
+        console.log("Ticket introuvable")
+    }else{
+        let trj = trips.find((e)=> e.id == Tck.tripId)
+        tickets.splice(tickets.indexOf(Tck),1)
+        trj.availableSeats += 1
+    }
+
 }
 
+function rechercherTicket(){
+    let nom = prompt("Taper votre nom: ")
+    let teckts = tickets.filter((e)=> e.passengerName.toLocaleLowerCase() == nom.toLocaleLowerCase())
+
+    if(teckts.length == 0){
+        console.log("introuvable")
+    }else{
+        teckts.forEach((e)=>{
+        let depart = trips.find((trip)=>e.id === trip.id).departure
+        let dest = trips.find((trip)=>e.id === trip.id).destination
+
+        console.log("Ticket#",e.id)
+        console.log("passager: ",e.passengerName)
+        console.log("trajet: ",depart,"=>",dest)
+        console.log("place: ",e.seatNumber)
+        console.log("prix: ",e.price)
+    })
+    }
+    
+}
+
+
+function filtrerTrajets(){
+    let ville = prompt("Taper la ville: ")
+
+    let trj = trips.filter((e)=>e.departure.toLocaleLowerCase() == ville.toLocaleLowerCase())
+
+    if(trj.length == 0 ){
+        console.log("introuvable")
+    }else{
+        trj.forEach((e)=>{
+            console.log(e.departure,"=>",e.destination," : ",e.price,"DH")
+        })
+    }
+}
+
+
+function trierTrajets(){
+    let temp = 0
+    for(let i = 0; i < trips.length; i++){
+        
+        for(let j = 0; j < trips.length - 1 ; j++){
+            
+            if(trips[i].price > trips[j+1].price){
+                temp = trips[i]
+                trips[i] = trips[j+1]
+                trips[j+1] = temp
+            }
+        }
+    }
+
+    trips.forEach((e)=>{
+        console.log(e.departure,"=>",e.destination,": ",e.price,"DH")
+    })
+}
+
+
+
+function menu(choix){
+    
+
+switch(choix){
+    case 1: afficherTrajets();break;
+    case 2: acheterUnTicket();break;
+    case 3: afficherTickets();break;
+    case 4: annulerTicket();break;
+    case 5: rechercherTicket();break;
+    case 6: filtrerTrajets();break;
+    case 7: trierTrajets();break;
+    case 0: console.log("Quiter...");break;
+    default:{
+        console.log("choix pas existe!")
+    }
+}
+}
 do{
+    console.log(`
+================================
+        AILWAY MANAGER
+================================
+
+1. Afficher les trajets
+2. Acheter un ticket
+3. Afficher les tickets
+4. Annuler un ticket
+5. Rechercher un ticket
+6. Filtrer les trajets
+7. Trier les trajets
+0. Quitter
+`)
     choix = Number(prompt("Taper votre choix: "))
     menu(choix)
 }while(choix != 0)
