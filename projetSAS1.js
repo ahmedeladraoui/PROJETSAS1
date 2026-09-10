@@ -213,7 +213,7 @@ Places disponibles: ${ele.availableSeats}
 function acheterUnTicket(){
     let nom = prompt("Taper votre nom: ")
     let idTrajet = prompt("Taper identifiant du trajet: ")
-    let trj = trips.find((e)=> e.id == idTrajet ? e : false)
+    let trj = trips.find((e)=> e.id == idTrajet )
     let seateNbr = null
     
         if(trj == undefined){
@@ -257,8 +257,8 @@ function afficherTickets(){
     let count = 0
     console.log("=== TICKETS ===")
     tickets.forEach((e)=>{
-        let depart = trips.find((trip)=>e.id === trip.id).departure
-        let dest = trips.find((trip)=>e.id === trip.id).destination
+        let depart = trips.find((trip)=>e.tripId === trip.id).departure
+        let dest = trips.find((trip)=>e.tripId === trip.id).destination
         console.log(`Ticker#${e.id}\nPassages: ${e.passengerName}\nTrajet: ${depart} => ${dest}\nPlace: ${e.seatNumber}\nPrix: ${e.price}DH`)
         count++
     })
@@ -320,13 +320,12 @@ function filtrerTrajets(){
 
 function trierTrajets(){
     let temp = 0
-    for(let i = 0; i < trips.length; i++){
+    for(let i = 0; i < trips.length ; i++){
         
-        for(let j = 0; j < trips.length - 1 ; j++){
-            
-            if(trips[i].price > trips[j+1].price){
-                temp = trips[i]
-                trips[i] = trips[j+1]
+        for(let j = 0; j < trips.length - 1; j++){
+            if(trips[j].price > trips[j+1].price){
+                temp = trips[j]
+                trips[j] = trips[j+1]
                 trips[j+1] = temp
             }
         }
