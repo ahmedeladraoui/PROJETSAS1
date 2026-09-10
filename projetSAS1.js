@@ -210,6 +210,21 @@ Places disponibles: ${ele.availableSeats}
     }
 }
 
+
+function getNbrPlace(idT){
+    let trj = trips.find((trj)=> trj.id == idT)
+    let count = 0
+    let nbr = 0
+    tickets.forEach((tk)=>{
+        if(tk.tripId == idT){
+            count++
+        }
+    })
+    nbr = trj.availableSeats + count
+    return nbr
+}
+
+
 function acheterUnTicket(){
     let nom = prompt("Taper votre nom: ")
     let idTrajet = prompt("Taper identifiant du trajet: ")
@@ -224,7 +239,7 @@ function acheterUnTicket(){
                 tickets.forEach((tk)=>{
                     if(tk.tripId == trj.id) places.push(tk.seatNumber)
                 })
-            for(let i = 1; i <= 50; i++){
+            for(let i = 1; i <= getNbrPlace(idTrajet); i++){
                 if(!(places.includes(i))){
                     seateNbr = i
                     break
@@ -271,12 +286,15 @@ function annulerTicket(){
     let idTck = Number(prompt("Taper l'identifiant du ticket: "))
 
     let Tck = tickets.find((t)=> t.id == idTck)
-    if(idTck == undefined){
+    let indx = tickets.findIndex((t)=> t.id == idTck)
+    if(Tck == undefined){
         console.log("Ticket introuvable")
     }else{
         let trj = trips.find((e)=> e.id == Tck.tripId)
-        tickets.splice(tickets.indexOf(Tck),1)
+
+        tickets.splice(indx,1)
         trj.availableSeats += 1
+        console.log("supprimer avec ")
     }
 
 }
