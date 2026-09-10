@@ -294,7 +294,7 @@ function annulerTicket(){
 
         tickets.splice(indx,1)
         trj.availableSeats += 1
-        console.log("supprimer avec ")
+        console.log("supprimer avec succes!")
     }
 
 }
@@ -355,6 +355,50 @@ function trierTrajets(){
 }
 
 
+function nbrTicket(){
+    console.log("Le nombre total des tickes: ",tickets.length)
+}
+function chffreAfaires(){
+    let total = 0
+    if(tickets.length > 0){
+        tickets.forEach((e)=>{
+            total += e.price
+        })
+    }
+    console.log("Chiffre d'affaues est: ",total)
+}
+
+function trajetPlusVendu(){
+    let newArr = trips
+    let temp = 0
+    let nbr = 0
+
+    for(let i = 0; i < newArr.length ; i++){
+        for(let j = 0; j < newArr.length - 1; j++){
+            if(newArr[j].availableSeats > newArr[j+1].availableSeats){
+                temp = newArr[j]
+                newArr[j] = newArr[j+1]
+                newArr[j+1] = temp
+            }
+        }
+    }
+    
+    let trj = newArr[0]
+    if(tickets.length > 0){
+        tickets.forEach((e)=>{
+            if(e.tripId == trj.id) nbr++
+        })
+        if(nbr != 0){
+            console.log("Trajet le plus vendu :")
+            console.log(trj.departure,"=>",trj.destination)
+            console.log(nbr,"tickets vendus")
+        }else{
+            console.log("accun trajet vendus!")
+        }
+    }
+    
+    
+}
 
 function menu(choix){
     
@@ -367,6 +411,7 @@ switch(choix){
     case 5: rechercherTicket();break;
     case 6: filtrerTrajets();break;
     case 7: trierTrajets();break;
+    case 8: trajetPlusVendu();break;
     case 0: console.log("Quiter...");break;
     default:{
         console.log("choix pas existe!")
@@ -386,6 +431,7 @@ do{
 5. Rechercher un ticket
 6. Filtrer les trajets
 7. Trier les trajets
+8. Trajet Plus Vendu
 0. Quitter
 `)
     choix = Number(prompt("Taper votre choix: "))
