@@ -411,7 +411,9 @@ switch(choix){
     case 5: rechercherTicket();break;
     case 6: filtrerTrajets();break;
     case 7: trierTrajets();break;
-    case 8: trajetPlusVendu();break;
+    case 8: chffreAfaires();break;
+    case 9: nbrTicket();break;
+    case 10: trajetPlusVendu();break;
     case 0: console.log("Quiter...");break;
     default:{
         console.log("choix pas existe!")
@@ -431,7 +433,9 @@ do{
 5. Rechercher un ticket
 6. Filtrer les trajets
 7. Trier les trajets
-8. Trajet Plus Vendu
+8. chiffre d'affaire
+9. nobre de ticket
+10. Trajet Plus Vendu
 0. Quitter
 `)
     choix = Number(prompt("Taper votre choix: "))
